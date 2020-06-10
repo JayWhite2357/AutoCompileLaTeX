@@ -1,4 +1,4 @@
-name: CI
+name: Compile all tex files
 on:
   push:
     branches: [ master ]
@@ -17,6 +17,6 @@ jobs:
         git config --local user.name "GitHub Action"
         git checkout --orphan pdfs
         git rm --cached -rf .
-        find . -type f -name "*.pdf" -exec git add -f {} \;
+        find . -type f -name "*.tex" -execdir bash -c 'filename={};git add -f "${filename%.tex}.pdf";' \;
         git commit -m "Compile *.tex files"
         git push -f origin pdfs
