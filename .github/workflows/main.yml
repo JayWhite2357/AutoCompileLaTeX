@@ -8,7 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install LaTeX
-      run: sudo apt -y install texlive latexmk
+      run: sudo apt -y install texlive-latex-extra latexmk
     - name: Compile all .tex files
       run: find . -type f -name "*.tex" -execdir latexmk -pdf -interaction=batchmode  {} \;
     - name: Commit files
