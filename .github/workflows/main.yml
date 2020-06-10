@@ -9,8 +9,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install LaTeX
       run: sudo apt -y install texlive latexmk
-    - name: Compile main.tex
-      run: latexmk -pdf -interaction=batchmode main.tex
+    - name: Compile all .tex files
+      run: find . -type f -name "*.tex" -execdir latexmk -pdf -interaction=batchmode  {} \;
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"
