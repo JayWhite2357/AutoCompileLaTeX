@@ -16,7 +16,7 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git checkout --orphan pdfs
-        git rm -rf .
-        git add *.pdf
+        git rm --cached -rf .
+        git find . -type f -name "*.pdf" -exec git add {} \;
         git commit -m "Compile *.tex files"
         git push -f origin pdfs
