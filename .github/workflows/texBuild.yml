@@ -10,8 +10,9 @@ jobs:
     - name: Get Cache Key
       id: get-cache-key
       env:
-        LATEX_PACKAGES: latexmk texlive-latex-extra
+        DEFAULT_LATEX_PACKAGES: texlive-latex-extra latexmk
       run: |
+        LATEX_PACKAGES=$(if test -f LATEX_PACKAGES; then cat LATEX_PACKAGES; else echo $DEFUALT_LATEX_PACKAGES; fi;)
         CACHE_KEY=$(apt-cache policy $LATEX_PACKAGES | grep -oP "^[^ ]*:|(?<=Candidate: )[^ ]*" | tr -d '[:space:]')
         echo "::set-output name=key::$CACHE_KEY"
         echo "::set-output name=packs::$LATEX_PACKAGES"
