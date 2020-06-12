@@ -22,7 +22,7 @@ jobs:
         path: ~/latex-cache
         key: ${{ steps.get-cache-key.outputs.key }}
     - name: Install LaTeX if not cached
-      if: steps.cache-primes.outputs.cache-hit != 'true'
+      if: steps.cache-latex.outputs.cache-hit != 'true'
       env:
         LATEX_PACKAGES: ${{ steps.get-cache-key.outputs.packs }}
       run: |
