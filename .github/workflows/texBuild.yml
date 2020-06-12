@@ -7,19 +7,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Get Cache Key
+      id: get-cache-key
+      env:
+        LATEX_PACKAGES: texlive-latex-extra latexmk
+      run: |
+        CACHE_KEY=$(apt-cache policy $LATEX_PACKAGES | grep -oP "^[^ ]*:|(?<=Candidate: )[^ ]*" | tr -d '[:space:]')
+        echo "::set-output name=key::$CACHE_KEY"
+        echo "::set-output name=packs::$LATEX_PACKAGES"
     - name: Cache LaTeX
       id: cache-latex
       uses: actions/cache@v2
       with:
         path: ~/latex-cache
-        key: ${{ secrets.LATEX_PACKAGES }}
+        key: ${{ steps.get-cache-key.outputs.key }}
     - name: Install LaTeX if not cached
       if: steps.cache-primes.outputs.cache-hit != 'true'
       env:
-        LATEX_PACKAGES: ${{ secrets.LATEX_PACKAGES }}
+        LATEX_PACKAGES: ${{ steps.get-cache-key.outputs.packs }}
       run: |
         TF=$(mktemp)
-        mkdir -p ~/latex-cache
+        mkdir ~/latex-cache
         apt-get install -s $LATEX_PACKAGES | grep -oP "(?<=Inst )[^ ]*" > $TF
         sudo apt install -y $LATEX_PACKAGES
         cat $TF | xargs dpkg -L | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents -t ~/latex-cache
