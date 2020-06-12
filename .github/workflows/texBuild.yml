@@ -30,7 +30,7 @@ jobs:
         mkdir ~/latex-cache
         apt-get install -s $LATEX_PACKAGES | grep -oP "(?<=Inst )[^ ]*" > $TF
         sudo apt install -y $LATEX_PACKAGES
-        cat $TF | xargs dpkg -L | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents -t ~/latex-cache
+        cat $TF | xargs dpkg -L | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | grep -v "^/usr/share/doc/" | xargs cp --parents -t ~/latex-cache
     - name: Install LaTeX if cached
       if: steps.cache-primes.outputs.cache-hit != 'false'
       run: sudo cp --verbose --force --recursive ~/latex-cache/* /
