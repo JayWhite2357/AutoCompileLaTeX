@@ -26,7 +26,7 @@ jobs:
         LATEX_PACKAGES: ${{ steps.get-cache-key.outputs.packs }}
       run: |
         TF=$(mktemp)
-        mkdir ~/latex-cache
+        mkdir -p ~/latex-cache
         apt-get install -s $LATEX_PACKAGES | grep -oP "(?<=Inst )[^ ]*" > $TF
         sudo apt install -y $LATEX_PACKAGES
         cat $TF | xargs dpkg -L | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | grep -v "^/usr/share/doc/" | xargs cp --parents -t ~/latex-cache
