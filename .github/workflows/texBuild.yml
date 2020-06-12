@@ -7,8 +7,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Install LaTeX
-      run: sudo apt -y install texlive-latex-extra latexmk
+    - name: Cache LaTeX
+      id: cache-latex
+      uses: actions/cache@v2
+      with:
+        path: ~/latex-cache
+        key: ${{ secrets.LATEX_PACKAGES }}
+    - name: Install LaTeX if not cached
+      if: steps.cache-primes.outputs.cache-hit != 'true'
+      env:
+        LATEX_PACKAGES: ${{ secrets.LATEX_PACKAGES }}
+      run: |
+        TF=$(mktemp)
+        apt-get install -s $LATEX_PACKAGES | grep -oP "(?<=Inst )[^ ]*" > $TF
+        sudo apt install -y $LATEX_PACKAGES
+        cat $TF | xargs dpkg -L | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents -t ~/latex-cache
+    - name: Install LaTeX if cached
+      if: steps.cache-primes.outputs.cache-hit != 'false'
+      run: sudo cp --verbose --force --recursive ~/latex-cache/* /
+      
     - name: Compile all .tex files
       run: find . -type f -name "*.tex" -execdir latexmk -pdf -interaction=batchmode  {} \;
     - name: Commit files
