@@ -19,6 +19,7 @@ jobs:
         LATEX_PACKAGES: ${{ secrets.LATEX_PACKAGES }}
       run: |
         TF=$(mktemp)
+        mkdir -p ~/latex-cache
         apt-get install -s $LATEX_PACKAGES | grep -oP "(?<=Inst )[^ ]*" > $TF
         sudo apt install -y $LATEX_PACKAGES
         cat $TF | xargs dpkg -L | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents -t ~/latex-cache
