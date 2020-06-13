@@ -1,8 +1,5 @@
 name: Compile all tex files
-on:
-  push:
-    branches-ignore:
-      - '**-pdfs'
+on: [ push ]
 jobs:
   build:
     runs-on: ubuntu-latest
