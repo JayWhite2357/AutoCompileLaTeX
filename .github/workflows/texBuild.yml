@@ -31,7 +31,7 @@ jobs:
         mkdir -p ~/packages-cache
         apt-get install -s $UBUNTU_PACKAGES | grep -oP "(?<=Inst )[^ ]*" > $TF
         sudo apt install -y $UBUNTU_PACKAGES
-        cat $TF | xargs dpkg -L | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | grep -v "^/usr/share/doc/" | xargs cp --parents -t -P ~/packages-cache
+        cat $TF | xargs dpkg -L | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | grep -v "^/usr/share/doc/" | xargs cp --parents -P -t ~/packages-cache
     - name: Install packages if cached
       if: steps.cache-packages.outputs.cache-hit == 'true'
       run: sudo cp -v -f -r -P ~/packages-cache/* /
