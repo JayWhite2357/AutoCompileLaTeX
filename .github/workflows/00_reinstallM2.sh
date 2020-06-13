@@ -1,1 +1,1 @@
-sudo apt install macaulay2
+sudo apt install liblapack3
