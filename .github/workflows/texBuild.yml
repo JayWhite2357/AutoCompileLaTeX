@@ -34,7 +34,7 @@ jobs:
       if: steps.cache-latex.outputs.cache-hit == 'true'
       run: sudo cp --verbose --force --recursive ~/latex-cache/* /
     - name: Run all executable .sh files
-      find . -type f -executable -name "*.sh" | sort | xargs -I % bash -c 'cd $(dirname %) && bash $(basename %)'
+      run: find . -type f -executable -name "*.sh" | sort | xargs -I % bash -c 'cd $(dirname %) && bash $(basename %)'
     - name: Compile all .tex files
       run: find . -type f -name "*.tex" -execdir latexmk -pdf -interaction=batchmode  {} \;
     - name: Commit files
