@@ -5,6 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Add M2 Repository
+      run: ./00_addM2Repo.sh
     - name: Get Cache Key
       id: get-cache-key
       env:
