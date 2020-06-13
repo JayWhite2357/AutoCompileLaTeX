@@ -49,5 +49,5 @@ jobs:
         git checkout --orphan $NEW_BRANCH
         git rm --cached -rf .
         find . -type f -name "*.tex" -execdir bash -c 'filename={};git add -f "${filename%.tex}.pdf";' \;
-        git commit -m $NEW_MESSAGE
+        git commit -m "$NEW_MESSAGE"
         git push -f origin $NEW_BRANCH
