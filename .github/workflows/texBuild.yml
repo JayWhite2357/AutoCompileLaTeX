@@ -1,8 +1,5 @@
 name: Compile all tex files
-on:
-  push:
-    branches-ignore:
-      - '**-pdfs'
+on: [ push ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -37,7 +34,7 @@ jobs:
       if: steps.cache-latex.outputs.cache-hit == 'true'
       run: sudo cp --verbose --force --recursive ~/latex-cache/* /
     - name: Run all executable .sh files
-      run: find . -type f -executable -name "*.sh" -execdir {} \;
+      find . -type f -executable -name "*.sh" | sort | xargs -I % bash -c 'cd $(dirname %) && bash $(basename %)'
     - name: Compile all .tex files
       run: find . -type f -name "*.tex" -execdir latexmk -pdf -interaction=batchmode  {} \;
     - name: Commit files
