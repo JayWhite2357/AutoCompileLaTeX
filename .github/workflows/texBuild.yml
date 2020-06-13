@@ -2,7 +2,7 @@ name: Compile all tex files
 on:
   push:
     branches-ignore:
-      - '**/pdfs'
+      - '**-pdfs'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -44,7 +44,7 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        NEW_BRANCH=$(git rev-parse --abbrev-ref HEAD)/pdfs
+        NEW_BRANCH=$(git rev-parse --abbrev-ref HEAD)-pdfs
         NEW_MESSAGE="$(git log -1 --pretty=%B) [generate pdfs branch]"
         git checkout --orphan $NEW_BRANCH
         git rm --cached -rf .
