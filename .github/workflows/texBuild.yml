@@ -29,6 +29,7 @@ jobs:
       run: |
         TF=$(mktemp)
         mkdir -p ~/packages-cache
+        sudo apt update -q
         apt-get install -s $UBUNTU_PACKAGES | grep -oP "(?<=Inst )[^ ]*" > $TF
         sudo apt install -y $UBUNTU_PACKAGES
         cat $TF | xargs dpkg -L | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | grep -v "^/usr/share/doc/" | xargs cp --parents -t ~/packages-cache
