@@ -1,1 +1,1 @@
-latexmk texlive-latex-extra macaulay2
+texlive-latex-extra latexmk macaulay2
