@@ -1,6 +1,6 @@
 # Read this!!!
 
-[The pdfs are here in the pdfs branch.](../../tree/pdfs)
+[The pdfs are here in the pdfs branch.](../../tree/master-pdfs)
 
 All .tex files in the master branch are automatically compiled using `latexmk -pdf -interaction=batchmode`.
 
